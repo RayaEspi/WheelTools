@@ -228,6 +228,8 @@ public class MainWindow : Window, IDisposable
                     _ = SendGameLinksWithDelayAsync();
                 }
                 
+                ImGui.SameLine();
+                
                 if(ImGui.Button("Clear party members"))
                 {
                     Plugin.Log.Information($"Clearing party members");
