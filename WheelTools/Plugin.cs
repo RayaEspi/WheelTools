@@ -3,7 +3,6 @@ using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
-using Dalamud.Game.ClientState.Party;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin.Services;
 using ECommons;
@@ -73,44 +72,6 @@ public sealed class Plugin : IDalamudPlugin
     private void OnCommand(string command, string args)
     {
         ToggleMainUI();
-    }
-    
-    // When a player joins the party, add them to the configuration
-    public void OnPartyMemberAdded(IPartyMember member)
-    {
-        if (member == null || string.IsNullOrWhiteSpace(member.Name.ToString()))
-            return;
-
-        var existingMember = Configuration.PartyMembers.Find(m => m.Name == member.Name.ToString());
-        if (existingMember != null)
-            return;
-
-        var newMember = new Configuration.PartyMember
-        {
-            Name = member.Name.ToString(),
-            Spins = "0",
-            Preset = Configuration.DefaultPreset,
-            SpinSpeed = Configuration.DefaultSpinSpeed,
-            GameId = "<not created>",
-            Added = DateTime.UtcNow
-        };
-
-        Configuration.PartyMembers.Add(newMember);
-        Configuration.Save();
-    }
-    
-    // When a player leaves the party, disable them in the configuration
-    public void OnPartyMemberRemoved(IPartyMember member)
-    {
-        if (member == null || string.IsNullOrWhiteSpace(member.Name.ToString()))
-            return;
-
-        var existingMember = Configuration.PartyMembers.Find(m => m.Name == member.Name.ToString());
-        if (existingMember != null)
-        {
-            existingMember.Enabled = false;
-            Configuration.Save();
-        }
     }
 
     private void DrawUI() => WindowSystem.Draw();
