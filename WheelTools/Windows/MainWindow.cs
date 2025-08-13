@@ -222,10 +222,11 @@ public class MainWindow : Window, IDisposable
                 
                 ImGui.SameLine();
                 
-                if (ImGui.Button("Send game links to party"))
+                if(ImGui.Button("Clear party members"))
                 {
-                    Plugin.Log.Information($"Sending game links to party members");
-                    _ = SendGameLinksWithDelayAsync();
+                    Plugin.Log.Information($"Clearing party members");
+                    UpdateConfig(() => configuration.PartyMembers.Clear());
+                    RefreshPartySnapshot();
                 }
             }
             
