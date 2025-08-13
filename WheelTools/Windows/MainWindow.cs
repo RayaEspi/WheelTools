@@ -221,11 +221,18 @@ public class MainWindow : Window, IDisposable
                 }
                 
                 ImGui.SameLine();
+
+                if (ImGui.Button("Send game links to party"))
+                {
+                    Plugin.Log.Information($"Sending game links to party members");
+                    _ = SendGameLinksWithDelayAsync();
+                }
                 
                 if(ImGui.Button("Clear party members"))
                 {
                     Plugin.Log.Information($"Clearing party members");
-                    UpdateConfig(() => configuration.PartyMembers.Clear());
+                    configuration.PartyMembers.Clear();
+                    configuration.Save();
                     RefreshPartySnapshot();
                 }
             }
